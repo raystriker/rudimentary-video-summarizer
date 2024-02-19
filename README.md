@@ -19,7 +19,7 @@ The Rudimentary Video Summarizer is a Python-based tool designed to streamline t
 ### Setup
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/rudimentary-video-summarizer.git
+   git clone https://github.com/raystriker/rudimentary-video-summarizer.git
    ```
 2. Navigate to the project directory:
    ```
