@@ -1,16 +1,19 @@
-import os
 import re
+from pathlib import Path
 
-def sanitize_filename(filename):
-    # Remove invalid characters and replace spaces
+BASE_DIR = Path(__file__).resolve().parent
+
+AUDIO_OUTPUT_DIR = BASE_DIR / "audio_files"
+TRANSCRIPTION_OUTPUT_DIR = BASE_DIR / "transcriptions"
+SUMMARY_OUTPUT_DIR = BASE_DIR / "summaries"
+
+AUDIO_OUTPUT_DIR.mkdir(exist_ok=True)
+TRANSCRIPTION_OUTPUT_DIR.mkdir(exist_ok=True)
+SUMMARY_OUTPUT_DIR.mkdir(exist_ok=True)
+
+
+def sanitize_filename(filename: str) -> str:
+    """Remove invalid characters and replace spaces with underscores."""
     filename = re.sub(r'[\\/*?:"<>|]', "", filename)
-    filename = re.sub(r'\s+', '_', filename)
+    filename = re.sub(r"\s+", "_", filename)
     return filename
-
-# Define directories for storing audio files, transcriptions, and summaries
-audio_output_dir = 'audio_files'
-transcription_output_dir = 'transcriptions'
-summary_output_dir = 'summaries'
-os.makedirs(audio_output_dir, exist_ok=True)
-os.makedirs(transcription_output_dir, exist_ok=True)
-os.makedirs(summary_output_dir, exist_ok=True)

@@ -1,16 +1,28 @@
+import logging
+
 from pytube import YouTube
-import os
-from misc_utils import audio_output_dir, sanitize_filename
+from pytube.exceptions import PytubeError
+
+from misc_utils import AUDIO_OUTPUT_DIR, sanitize_filename
+
+logger = logging.getLogger(__name__)
 
 
-def download_youtube_audio(youtube_url):
+def download_youtube_audio(youtube_url: str) -> str:
+    """Download the audio track from a YouTube video.
+
+    Returns the path to the downloaded MP3 file.
+    Raises RuntimeError if the download fails.
+    """
     try:
         yt = YouTube(youtube_url)
-        video = yt.streams.filter(only_audio=True).first()
+        stream = yt.streams.filter(only_audio=True).first()
+        if stream is None:
+            raise RuntimeError(f"No audio stream found for {youtube_url}")
+
         audio_filename = sanitize_filename(f"{yt.title}.mp3")
-        video.download(output_path=audio_output_dir, filename=audio_filename)
-        print(f"Downloaded YouTube audio: {audio_filename}")
-        return os.path.join(audio_output_dir, audio_filename)
-    except Exception as e:
-        print(f"Error downloading YouTube audio: {e}")
-        return None
+        stream.download(output_path=str(AUDIO_OUTPUT_DIR), filename=audio_filename)
+        logger.info("Downloaded YouTube audio: %s", audio_filename)
+        return str(AUDIO_OUTPUT_DIR / audio_filename)
+    except PytubeError as exc:
+        raise RuntimeError(f"Failed to download YouTube audio: {exc}") from exc
