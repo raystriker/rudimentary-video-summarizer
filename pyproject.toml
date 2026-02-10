@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=75.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "rudimentary-video-summarizer"
+version = "1.0.0"
+description = "Download, transcribe, and summarize YouTube videos using Whisper and a local LLM."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+    { name = "raystriker" },
+]
+
+dependencies = [
+    "openai>=1.12",
+    "pytube>=15",
+    "moviepy>=1.0.3",
+    "tqdm>=4.66",
+    "transformers>=4.37",
+    "torch>=2.2",
+    "optimum>=1.17",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.9",
+]
+gpu = [
+    "nvidia-cublas-cu12",
+    "nvidia-cuda-cupti-cu12",
+    "nvidia-cuda-nvrtc-cu12",
+    "nvidia-cuda-runtime-cu12",
+    "nvidia-cudnn-cu12",
+    "nvidia-cufft-cu12",
+    "nvidia-curand-cu12",
+    "nvidia-cusolver-cu12",
+    "nvidia-cusparse-cu12",
+    "nvidia-nccl-cu12",
+    "nvidia-nvjitlink-cu12",
+    "nvidia-nvtx-cu12",
+    "triton>=2.2",
+]
+
+[project.scripts]
+video-summarizer = "main:cli"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
